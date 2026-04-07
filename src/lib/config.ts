@@ -7,6 +7,7 @@ export interface Config {
   slicerPath: string;
   slicerProfilesDir: string;
   openscadPath: string | null;
+  ankermakeAppPath: string;
   workspaceDir: string;
 }
 
@@ -14,6 +15,7 @@ const PYTHON = "C:\\Users\\sabro\\AppData\\Local\\Programs\\Python\\Python312\\p
 const ANKERCTL = "C:\\Users\\sabro\\ankermake-m5-protocol\\ankerctl.py";
 const SLICER = "C:\\Users\\sabro\\AppData\\Local\\eufyMake Studio 3D\\eufymake studio-console.exe";
 const PROFILES = "C:\\Users\\sabro\\AppData\\Local\\eufyMake Studio 3D\\resources\\profiles\\Anker-ini";
+const ANKERMAKE_APP = "C:\\Users\\sabro\\AppData\\Local\\AnkerMake\\AnkerMake.exe";
 const WORKSPACE = "C:\\Users\\sabro\\Documents\\GitHub\\agent-printer\\workspace";
 
 function findOpenSCAD(): string | null {
@@ -47,6 +49,7 @@ export function getConfig(): Config {
     slicerPath: SLICER,
     slicerProfilesDir: PROFILES,
     openscadPath: findOpenSCAD(),
+    ankermakeAppPath: ANKERMAKE_APP,
     workspaceDir: WORKSPACE,
   };
 
