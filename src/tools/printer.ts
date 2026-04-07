@@ -69,14 +69,16 @@ export function registerPrinterTools(server: McpServer) {
     },
     async ({ command }) => {
       try {
-        // Use mqtt gcode but it's interactive — we'll use mqtt send instead
-        // Actually, gcode is interactive. Let's use a simpler approach:
-        // echo the command into the gcode subcommand
+        // The mqtt gcode subcommand uses cmdData/cmdLen fields (not "gcode="),
+        // but it's interactive (prompt loop). Use mqtt send with the correct fields.
         const config = getConfig();
         const result = await execTool(
           config.pythonPath,
-          [config.ankerctlPath, "mqtt", "send", "ZZ_MQTT_CMD_GCODE_COMMAND", `gcode=${command}`],
-          { timeout: 10_000 },
+          [
+            config.ankerctlPath, "mqtt", "send", "ZZ_MQTT_CMD_GCODE_COMMAND",
+            `cmdData=${command}`, `cmdLen=${command.length}`,
+          ],
+          { timeout: 15_000 },
         );
 
         return {

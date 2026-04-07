@@ -2,7 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import path from "node:path";
 import { existsSync } from "node:fs";
-import { readFile } from "node:fs/promises";
+import { readFile, rename } from "node:fs/promises";
 import { execTool } from "../lib/exec.js";
 import { getConfig } from "../lib/config.js";
 
@@ -104,6 +104,12 @@ export function registerSliceTools(server: McpServer) {
             ],
             isError: true,
           };
+        }
+
+        // Slicer writes to .gcode.tmp then fails to rename (path separator bug)
+        const tmpFile = gcodeOut + ".tmp";
+        if (!existsSync(gcodeOut) && existsSync(tmpFile)) {
+          await rename(tmpFile, gcodeOut);
         }
 
         // Parse gcode for estimates
